@@ -1,1 +1,1 @@
-from .brightness import decrease_brightness, increase_brightness
+from .brightness import adjust_brightness
