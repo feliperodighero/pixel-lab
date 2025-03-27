@@ -1,0 +1,1 @@
+from .logical_operations import convert_to_binary, logical_not, logical_operation

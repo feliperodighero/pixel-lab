@@ -4,9 +4,14 @@ from PIL import Image
 
 def adjust_brightness(img: Image, value: int) -> Image:
     image_array = np.array(img)
-    new_image = image_array.copy()
 
-    height, width, channels = new_image.shape
+    if len(image_array.shape) == 3:
+        height, width, channels = image_array.shape
+    elif len(image_array.shape) == 2:
+        height, width = image_array.shape
+        channels = 1
+
+    new_image = image_array.copy()
 
     for i in range(height):
         for j in range(width):
