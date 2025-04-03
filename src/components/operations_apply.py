@@ -11,9 +11,36 @@ from operations.arithmetic import (
 from operations.enhance import histogram_equalization, threshold_image
 from operations.invert import flip_horizontal, flip_vertical
 from operations.logical import convert_to_binary, logical_not, logical_operation
+from operations.morphological import dilation_filter, erosion_filter
+from operations.spacial_domain import (
+    conservative_smoothing,
+    gaussian_filter,
+    laplacian_filter,
+    max_min_mean_filters,
+    median_filter,
+    order_filter,
+    prewitt_filter,
+    sobel_filter,
+)
 
 
-def apply_operations(first_image, second_image, operation_arithmetic, operation_invert, operation_logic, operation_enhance):
+def apply_operations(
+        first_image,
+        second_image,
+        operation_arithmetic,
+        operation_invert,
+        operation_logic,
+        operation_enhance,
+        threshold,
+        filter_option_low_pass,
+        kernel_size,
+        order,
+        sigma,
+        filter_option_high_pass,
+        kernel_type,
+        operation_morphology,
+        structure_size,
+    ):
     new_image = first_image
 
     if operation_arithmetic == "Somar":
@@ -37,7 +64,6 @@ def apply_operations(first_image, second_image, operation_arithmetic, operation_
     elif operation_invert == "Cima para Baixo":
         new_image = flip_vertical(new_image)
 
-    threshold = st.slider("Defina o Threshold para binarização", 0, 255, 128)
     if operation_logic != "Nenhuma":
         binary_image1 = convert_to_binary(first_image, threshold)
         if operation_logic == "NOT":
@@ -50,5 +76,35 @@ def apply_operations(first_image, second_image, operation_arithmetic, operation_
         new_image = histogram_equalization(first_image.convert("L"))
     elif operation_enhance == "Limiarização":
         new_image = threshold_image(first_image.convert("L"), threshold)
+
+    if filter_option_low_pass != "Nenhuma":
+        if filter_option_low_pass == "MAX":
+            new_image = max_min_mean_filters(first_image, kernel_size, filter_option_low_pass.lower())
+        elif filter_option_low_pass == "MIN":
+            new_image = max_min_mean_filters(first_image, kernel_size, filter_option_low_pass.lower())
+        elif filter_option_low_pass == "MEAN":
+            new_image = max_min_mean_filters(first_image, kernel_size, filter_option_low_pass.lower())
+        elif filter_option_low_pass == "MEDIANA":
+            new_image = median_filter(first_image, kernel_size)
+        elif filter_option_low_pass == "ORDEM":
+            new_image = order_filter(first_image, kernel_size, order)
+        elif filter_option_low_pass == "SUAVIZAÇÃO CONSERVATIVA":
+            new_image = conservative_smoothing(first_image, kernel_size)
+        elif filter_option_low_pass == "GAUSSIANO":
+            new_image = gaussian_filter(first_image, sigma)
+
+    if filter_option_high_pass != "Nenhuma":
+        if filter_option_high_pass == "Prewitt":
+            new_image = prewitt_filter(first_image)
+        elif filter_option_high_pass == "Sobel":
+            new_image = sobel_filter(first_image)
+        elif filter_option_high_pass == "Laplaciano":
+            new_image = laplacian_filter(first_image, kernel_type)
+
+    if operation_morphology != "Nenhuma":
+        if operation_morphology == "Dilatação":
+            new_image = dilation_filter(first_image, structure_size)
+        elif operation_morphology == "Erosão":
+            new_image = erosion_filter(first_image, structure_size)
 
     return new_image
