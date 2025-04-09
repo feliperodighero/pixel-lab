@@ -81,10 +81,10 @@ if first_uploaded_image is not None:
 
     with tab6:
         operation_morphology = st.radio(
-            "Operações Morfológicas:", ("Nenhuma", "Dilatação", "Erosão")
+            "Operações Morfológicas:", ("Nenhuma", "Dilatação", "Erosão", "Abertura", "Fechamento", "Contorno")
         )
 
-        if operation_morphology == "Dilatação" or operation_morphology == "Erosão":
+        if operation_morphology != "Nenhuma":
             structure_size = st.slider("Tamanho do Elemento Estruturante", min_value=3, max_value=9, step=2, value=3)
 
     new_image_result = apply_operations(
@@ -102,7 +102,7 @@ if first_uploaded_image is not None:
         filter_option_high_pass if operation_spacial_domain == "Filtros Passa-Alta" else "Nenhuma",
         kernel_type if operation_spacial_domain == "Filtros Passa-Alta" and filter_option_high_pass == "Laplaciano" else "4-neighbors",
         operation_morphology,
-        structure_size if operation_morphology == "Dilatação" or operation_morphology == "Erosão" else 0,
+        structure_size if operation_morphology != "Nenhuma" else 0,
     )
 
     st.divider()

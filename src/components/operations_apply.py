@@ -11,7 +11,13 @@ from operations.arithmetic import (
 from operations.enhance import histogram_equalization, threshold_image
 from operations.invert import flip_horizontal, flip_vertical
 from operations.logical import convert_to_binary, logical_not, logical_operation
-from operations.morphological import dilation_filter, erosion_filter
+from operations.morphological import (
+    border_extraction_filter,
+    closing_filter,
+    dilation_filter,
+    erosion_filter,
+    opening_filter,
+)
 from operations.spacial_domain import (
     conservative_smoothing,
     gaussian_filter,
@@ -106,5 +112,11 @@ def apply_operations(
             new_image = dilation_filter(first_image, structure_size)
         elif operation_morphology == "Erosão":
             new_image = erosion_filter(first_image, structure_size)
+        elif operation_morphology == "Abertura":
+            new_image = opening_filter(first_image, structure_size)
+        elif operation_morphology == "Fechamento":
+            new_image = closing_filter(first_image, structure_size)
+        elif operation_morphology == "Contorno":
+            new_image = border_extraction_filter(first_image, structure_size)
 
     return new_image
