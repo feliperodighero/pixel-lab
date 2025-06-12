@@ -28,6 +28,7 @@ from operations.spacial_domain import (
     prewitt_filter,
     sobel_filter,
 )
+from utils.histogram import calculate_histogram, plot_histogram
 
 
 def apply_operations(
@@ -80,6 +81,23 @@ def apply_operations(
 
     if operation_enhance == "Equalização de Histograma":
         new_image = histogram_equalization(first_image.convert("L"))
+
+        original_image = first_image.convert("L")
+        equalized_gray = new_image
+
+        original_hist = calculate_histogram(original_image)
+        equalized_hist = calculate_histogram(equalized_gray)
+
+        original_hist_image = plot_histogram(original_hist, title="Histograma Original")
+        equalized_hist_image = plot_histogram(equalized_hist, title="Histograma Equalizado")
+
+        st.subheader("Comparação de Histogramas")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image(original_hist_image, caption="Histograma Original", use_container_width=True)
+        with col2:
+            st.image(equalized_hist_image, caption="Histograma Equalizado", use_container_width=True)
+
     elif operation_enhance == "Limiarização":
         new_image = threshold_image(first_image.convert("L"), threshold)
 
