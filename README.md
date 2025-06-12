@@ -40,6 +40,7 @@ Plataforma interativa desenvolvida com Python e Streamlit para aplicar filtros e
   <img src="https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=fff&style=for-the-badge" alt="Streamlit" />
 </p>
 
+![Captura de tela](https://github.com/user-attachments/assets/32447927-0201-4088-9339-1fd3b45e6a54)
 
 ## 🚀 Como Executar Localmente
 
