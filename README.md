@@ -7,23 +7,23 @@
   </p>
 
 <p>
-  <a href="https://github.com/feliperodighero/hotel-reservations/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/feliperodighero/hotel-reservations" alt="contributors" />
+  <a href="https://github.com/feliperodighero/pixel-lab/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/feliperodighero/pixel-lab" alt="contributors" />
   </a>
   <a href="">
-    <img src="https://img.shields.io/github/last-commit/feliperodighero/hotel-reservations" alt="last update" />
+    <img src="https://img.shields.io/github/last-commit/feliperodighero/pixel-lab" alt="last update" />
   </a>
-  <a href="https://github.com/feliperodighero/hotel-reservations/network/members">
-    <img src="https://img.shields.io/github/forks/feliperodighero/hotel-reservations" alt="forks" />
+  <a href="https://github.com/feliperodighero/pixel-lab/network/members">
+    <img src="https://img.shields.io/github/forks/feliperodighero/pixel-lab" alt="forks" />
   </a>
-  <a href="https://github.com/feliperodighero/hotel-reservations/stargazers">
-    <img src="https://img.shields.io/github/stars/feliperodighero/hotel-reservations" alt="stars" />
+  <a href="https://github.com/feliperodighero/pixel-lab/stargazers">
+    <img src="https://img.shields.io/github/stars/feliperodighero/pixel-lab" alt="stars" />
   </a>
-  <a href="https://github.com/feliperodighero/hotel-reservations/issues/">
-    <img src="https://img.shields.io/github/issues/feliperodighero/hotel-reservations" alt="open issues" />
+  <a href="https://github.com/feliperodighero/pixel-lab/issues/">
+    <img src="https://img.shields.io/github/issues/feliperodighero/pixel-lab" alt="open issues" />
   </a>
-  <a href="https://github.com/feliperodighero/hotel-reservations/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/feliperodighero/hotel-reservations.svg" alt="license" />
+  <a href="https://github.com/feliperodighero/pixel-lab/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/feliperodighero/pixel-lab.svg" alt="license" />
   </a>
 </p>
 </div>
