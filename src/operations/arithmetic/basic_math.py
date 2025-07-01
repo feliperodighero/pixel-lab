@@ -1,15 +1,34 @@
-import numpy as np
 from PIL import Image
 
 
-def multiply_image(img, factor):
-    arr = np.array(img, dtype=np.float32)
-    result = np.clip(arr * factor, 0, 255)
-    return Image.fromarray(result.astype(np.uint8))
+def multiply_image(img: Image.Image, factor: float) -> Image.Image:
+    img = img.convert("RGB")
+    width, height = img.size
+    new_img = Image.new("RGB", (width, height))
+
+    for y in range(height):
+        for x in range(width):
+            r, g, b = img.getpixel((x, y))
+            r = min(int(r * factor), 255)
+            g = min(int(g * factor), 255)
+            b = min(int(b * factor), 255)
+            new_img.putpixel((x, y), (r, g, b))
+
+    return new_img
 
 
-def divide_image(img, factor):
-    arr = np.array(img, dtype=np.float32)
-    arr[arr == 0] = 1
-    result = np.clip(arr / factor, 0, 255)
-    return Image.fromarray(result.astype(np.uint8))
+def divide_image(img: Image.Image, factor: float) -> Image.Image:
+    img = img.convert("RGB")
+    width, height = img.size
+    new_img = Image.new("RGB", (width, height))
+
+    for y in range(height):
+        for x in range(width):
+            r, g, b = img.getpixel((x, y))
+            divisor = factor if factor != 0 else 1
+            r = min(int(r / divisor), 255)
+            g = min(int(g / divisor), 255)
+            b = min(int(b / divisor), 255)
+            new_img.putpixel((x, y), (r, g, b))
+
+    return new_img
