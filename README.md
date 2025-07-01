@@ -29,6 +29,12 @@
 </div>
 <br />
 
+<div align="center">
+  <a href="https://pixel-lab-hidstrb78gfpmmjrc7aqzz.streamlit.app" target="_blank">
+    <img src="https://img.shields.io/badge/Acessar%20Pixel%20Lab-Streamlit-red?style=for-the-badge&logo=streamlit&logoColor=white" alt="Pixel Lab Online" />
+  </a>
+</div>
+
 ## ✨ Sobre o Projeto
 
 Plataforma interativa desenvolvida com Python e Streamlit para aplicar filtros e transformações em imagens, implementados do zero, sem uso de bibliotecas de alto nível como OpenCV. Todos os algoritmos foram criados manualmente, com base nas fórmulas matemáticas que regem cada filtro, permitindo uma compreensão profunda dos processos de manipulação de imagens.
@@ -41,6 +47,12 @@ Plataforma interativa desenvolvida com Python e Streamlit para aplicar filtros e
 </p>
 
 ![Captura de tela](https://github.com/user-attachments/assets/32447927-0201-4088-9339-1fd3b45e6a54)
+
+## 🌠 URL do Projeto
+
+<a href="https://pixel-lab-hidstrb78gfpmmjrc7aqzz.streamlit.app">
+  Acesse o Pixel Lab 
+</a>
 
 ## 🚀 Como Executar Localmente
 
