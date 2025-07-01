@@ -1,69 +1,132 @@
-import numpy as np
+import math
 from PIL import Image
-from scipy.ndimage import convolve
 
 
 def prewitt_filter(image: Image.Image) -> Image.Image:
-    image_array = np.array(image.convert("L"))
-    height, width = image_array.shape
-    new_image = np.zeros((height, width))
+    image = image.convert("L")
+    width, height = image.size
+    original = image.load()
 
-    Gx = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
-    Gy = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]])
+    Gx = [[-1, 0, 1],
+          [-1, 0, 1],
+          [-1, 0, 1]]
 
-    pad = 1
-    padded_image = np.pad(image_array, pad, mode="edge")
+    Gy = [[-1, -1, -1],
+          [ 0,  0,  0],
+          [ 1,  1,  1]]
+
+    new_img = Image.new("L", (width, height))
+    new_pixels = new_img.load()
+
+    max_grad = 0
+    gradients = [[0 for _ in range(width)] for _ in range(height)]
+
+    for y in range(1, height - 1):
+        for x in range(1, width - 1):
+            total_gx = 0
+            total_gy = 0
+            for i in range(3):
+                for j in range(3):
+                    px = x + j - 1
+                    py = y + i - 1
+                    pixel = original[px, py]
+                    total_gx += Gx[i][j] * pixel
+                    total_gy += Gy[i][j] * pixel
+
+            grad = int(math.sqrt(total_gx ** 2 + total_gy ** 2))
+            gradients[y][x] = grad
+            max_grad = max(max_grad, grad)
 
     for y in range(height):
         for x in range(width):
-            region = padded_image[y : y + 3, x : x + 3]
-            gx = np.sum(Gx * region)
-            gy = np.sum(Gy * region)
-            new_image[y, x] = np.sqrt(gx**2 + gy**2)
+            valor = int(gradients[y][x] / max_grad * 255) if max_grad > 0 else 0
+            new_pixels[x, y] = valor
 
-    new_image = (new_image / new_image.max()) * 255
-    return Image.fromarray(new_image.astype(np.uint8))
+    return new_img
+
 
 
 def sobel_filter(image: Image.Image) -> Image.Image:
-    image_array = np.array(image.convert("L"))
-    height, width = image_array.shape
-    new_image = np.zeros((height, width))
+    image = image.convert("L")
+    width, height = image.size
+    original = image.load()
 
-    Gx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
-    Gy = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+    Gx = [[-1, 0, 1],
+          [-2, 0, 2],
+          [-1, 0, 1]]
 
-    pad = 1
-    padded_image = np.pad(image_array, pad, mode="edge")
+    Gy = [[-1, -2, -1],
+          [ 0,  0,  0],
+          [ 1,  2,  1]]
+
+    new_img = Image.new("L", (width, height))
+    new_pixels = new_img.load()
+
+    max_grad = 0
+    gradients = [[0 for _ in range(width)] for _ in range(height)]
+
+    for y in range(1, height - 1):
+        for x in range(1, width - 1):
+            total_gx = 0
+            total_gy = 0
+            for i in range(3):
+                for j in range(3):
+                    px = x + j - 1
+                    py = y + i - 1
+                    pixel = original[px, py]
+                    total_gx += Gx[i][j] * pixel
+                    total_gy += Gy[i][j] * pixel
+
+            grad = int(math.sqrt(total_gx ** 2 + total_gy ** 2))
+            gradients[y][x] = grad
+            max_grad = max(max_grad, grad)
 
     for y in range(height):
         for x in range(width):
-            region = padded_image[y : y + 3, x : x + 3]
-            gx = np.sum(Gx * region)
-            gy = np.sum(Gy * region)
-            new_image[y, x] = np.sqrt(gx**2 + gy**2)
+            value = int(gradients[y][x] / max_grad * 255) if max_grad > 0 else 0
+            new_pixels[x, y] = value
 
-    new_image = (new_image / new_image.max()) * 255
-    return Image.fromarray(new_image.astype(np.uint8))
+    return new_img
 
 
-def laplacian_filter(img: Image, kernel_type: str = "4-neighbors") -> Image:
-    image_gray = img.convert("L")
-    image_array = np.array(image_gray, dtype=np.float32)
+def laplacian_filter(img: Image.Image, kernel_type: str = "4-neighbors") -> Image.Image:
+    img = img.convert("L")
+    width, height = img.size
+    original = img.load()
 
-    kernels = {
-        "4-neighbors": np.array(
-            [[0, -1, 0], [-1, 4, -1], [0, -1, 0]], dtype=np.float32
-        ),
-        "8-neighbors": np.array(
-            [[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]], dtype=np.float32
-        ),
-    }
+    if kernel_type == "8-neighbors":
+        kernel = [
+            [-1, -1, -1],
+            [-1, 8, -1],
+            [-1, -1, -1],
+        ]
+    else:
+        kernel = [
+            [0, -1, 0],
+            [-1, 4, -1],
+            [0, -1, 0],
+        ]
 
-    kernel = kernels.get(kernel_type, kernels["4-neighbors"])
+    pad = 1
+    new_img = Image.new("L", (width, height))
+    new_pixels = new_img.load()
 
-    filtered_image = convolve(image_array, kernel, mode="reflect")
+    for y in range(pad, height - pad):
+        for x in range(pad, width - pad):
+            total = 0
+            for ky in range(3):
+                for kx in range(3):
+                    px = x + kx - pad
+                    py = y + ky - pad
+                    pixel = original[px, py]
+                    total += kernel[ky][kx] * pixel
 
-    filtered_image = np.clip(filtered_image, 0, 255).astype(np.uint8)
+            total = max(0, min(255, total))
+            new_pixels[x, y] = int(total)
 
-    return Image.fromarray(filtered_image)
+    for y in range(height):
+        for x in range(width):
+            if x < pad or x >= width - pad or y < pad or y >= height - pad:
+                new_pixels[x, y] = original[x, y]
+
+    return new_img
