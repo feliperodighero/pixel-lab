@@ -32,24 +32,34 @@ from utils.histogram import calculate_histogram, plot_histogram
 
 
 def apply_operations(
-        first_image,
-        second_image,
-        operation_arithmetic,
-        operation_invert,
-        operation_logic,
-        operation_enhance,
-        threshold,
-        filter_option_low_pass,
-        kernel_size,
-        order,
-        sigma,
-        filter_option_high_pass,
-        kernel_type,
-        operation_morphology,
-        structure_size,
-    ):
+    first_image,
+    second_image,
+    operation_arithmetic,
+    operation_invert,
+    operation_logic,
+    operation_enhance,
+    threshold,
+    filter_option_low_pass,
+    kernel_size,
+    order,
+    sigma,
+    filter_option_high_pass,
+    kernel_type,
+    operation_morphology,
+    structure_size,
+):
     new_image = first_image
 
+    ops_need_second_image = (
+        operation_arithmetic in ["Somar", "Subtrair", "Blending", "Média"]
+        or operation_logic in ["AND", "OR", "XOR"]
+    )
+
+    if ops_need_second_image and second_image is None:
+        st.error("⚠️ Esta operação requer uma segunda imagem. Por favor, envie outra imagem para continuar.")
+        return first_image
+
+    # Arithmetic Operations
     if operation_arithmetic == "Somar":
         new_image = sum_images(first_image, second_image)
     elif operation_arithmetic == "Subtrair":
@@ -66,11 +76,13 @@ def apply_operations(
     elif operation_arithmetic == "Média":
         new_image = average_images(first_image, second_image)
 
+    # Invert Operations
     if operation_invert == "Esquerda para Direita":
         new_image = flip_horizontal(new_image)
     elif operation_invert == "Cima para Baixo":
         new_image = flip_vertical(new_image)
 
+    # Logical Operations
     if operation_logic != "Nenhuma":
         binary_image1 = convert_to_binary(first_image, threshold)
         if operation_logic == "NOT":
@@ -79,6 +91,7 @@ def apply_operations(
             binary_image2 = convert_to_binary(second_image, threshold)
             new_image = logical_operation(binary_image1, binary_image2, operation_logic)
 
+    # Enhancement Operations
     if operation_enhance == "Equalização de Histograma":
         new_image = histogram_equalization(first_image.convert("L"))
 
@@ -101,6 +114,7 @@ def apply_operations(
     elif operation_enhance == "Limiarização":
         new_image = threshold_image(first_image.convert("L"), threshold)
 
+    # Low Pass Filters
     if filter_option_low_pass != "Nenhuma":
         if filter_option_low_pass == "MAX":
             new_image = max_min_mean_filters(first_image, kernel_size, filter_option_low_pass.lower())
@@ -117,6 +131,7 @@ def apply_operations(
         elif filter_option_low_pass == "GAUSSIANO":
             new_image = gaussian_filter(first_image, sigma)
 
+    # High Pass Filters
     if filter_option_high_pass != "Nenhuma":
         if filter_option_high_pass == "Prewitt":
             new_image = prewitt_filter(first_image)
@@ -125,6 +140,7 @@ def apply_operations(
         elif filter_option_high_pass == "Laplaciano":
             new_image = laplacian_filter(first_image, kernel_type)
 
+    # Morphological Operations
     if operation_morphology != "Nenhuma":
         if operation_morphology == "Dilatação":
             new_image = dilation_filter(first_image, structure_size)
