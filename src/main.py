@@ -24,6 +24,9 @@ if first_uploaded_image is not None:
     if second_uploaded_image is not None:
         second_image = Image.open(second_uploaded_image).convert("RGB")
 
+    if first_image.size != second_image.size:
+        second_image = second_image.resize(first_image.size)
+
     images_col3 = display_images(first_image, second_image)
 
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Aritmética", "Inverter", "Lógica", "Realce", "Domínio Espacial", "Morfologia"])
