@@ -24,7 +24,7 @@ if first_uploaded_image is not None:
     if second_uploaded_image is not None:
         second_image = Image.open(second_uploaded_image).convert("RGB")
 
-    if first_image.size != second_image.size:
+    if second_image is not None and first_image.size != second_image.size:
         second_image = second_image.resize(first_image.size)
 
     images_col3 = display_images(first_image, second_image)
